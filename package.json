@@ -1,9 +1,11 @@
 {
   "name": "reac",
   "version": "0.1.0",
+  "main": "./lib/index",
   "scripts": {
     "build": "babel src -d lib",
-    "build-example": "npm run build && babel example/src -d example/lib && node build/bundle-example"
+    "build-example": "npm run build && babel example/src -d example/lib && node build/bundle-example",
+    "postinstall": "npm run build"
   },
   "dependencies": {
     "virtual-dom": "2.1.1"
