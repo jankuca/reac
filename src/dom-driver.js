@@ -9,10 +9,12 @@ export default class DomDriver {
     mountNode.appendChild(rootNode)
     return rootNode
   }
+
   unmount(mountNode, prevRootNode) {
     mountNode.removeChild(prevRootNode)
     return null
   }
+
   applyPatches(mountNode, prevRootNode, patches) {
     let nextRootNode = patch(prevRootNode, patches)
     return nextRootNode

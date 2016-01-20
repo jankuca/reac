@@ -14,6 +14,7 @@ export default class Renderer {
     this.renderedElements_ = new WeakMap()
     this.rootNodes_ = new WeakMap()
   }
+
   render(nextElement, mountNode) {
     let prevComponent = this.mountedComponents_.get(mountNode)
 
@@ -31,6 +32,7 @@ export default class Renderer {
 
     this.mountedComponents_.set(mountNode, nextComponent)
   }
+
   unmountComponentAtNode(mountNode) {
     let component = this.mountedComponents_.get(mountNode)
     if (!component) {
@@ -47,6 +49,7 @@ export default class Renderer {
 
     this.mountedComponents_.delete(mountNode)
   }
+
   updateRendering_(mountNode, nextRenderedElement) {
     let prevRenderedElement = this.renderedElements_.get(mountNode)
     let nextRootNode = this.applyElementToRendering_(
@@ -62,6 +65,7 @@ export default class Renderer {
       this.renderedElements_.delete(mountNode)
     }
   }
+
   applyElementToRendering_(mountNode, prevRenderedElement, nextRenderedElement) {
     let nextRootNode
     if (!prevRenderedElement) {

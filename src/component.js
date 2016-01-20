@@ -7,12 +7,15 @@ export default class Component {
     this.state = null
     this.renderer_ = null
   }
+
   setRenderer(renderer) {
     this.renderer_ = renderer
   }
+
   setTransaction(transaction) {
     this.transaction_ = transaction
   }
+
   setState(nextPartialState) {
     if (this.transaction_) {
       this.transaction_.setState(nextPartialState)
@@ -28,6 +31,7 @@ export default class Component {
       'called for a untranslatable component'
     )
   }
+
   componentWillMount() {}
   componentDidMount() {}
   componentWillReceiveProps(nextProps) {}

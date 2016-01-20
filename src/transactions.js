@@ -3,6 +3,7 @@ export class MountTransaction {
   constructor() {
     this.nextState_ = null
   }
+
   perform(component, nextElement, render) {
     component = new nextElement.type(nextElement.props)
     this.nextState_ = component.state
@@ -15,6 +16,7 @@ export class MountTransaction {
 
     component.componentDidMount()
   }
+
   setState(nextPartialState) {
     this.nextState_ = Object.assign({}, this.nextState_, nextPartialState)
   }
@@ -24,6 +26,7 @@ export class ReceivePropsTransaction {
   constructor() {
     this.nextState_ = null
   }
+
   perform(component, nextElement, render) {
     let prevProps = component.props
     let prevState = component.state
@@ -46,6 +49,7 @@ export class ReceivePropsTransaction {
 
     component.componentDidUpdate(prevProps, prevState)
   }
+
   setState(nextPartialState) {
     this.nextState_ = Object.assign({}, this.nextState_, nextPartialState)
   }
@@ -55,6 +59,7 @@ export class SetStateTransaction {
   constructor() {
     this.nextPartialState_ = null
   }
+
   perform(component, nextElement, render) {
     let nextState = Object.assign({}, component.state, this.nextPartialState_)
 
@@ -71,6 +76,7 @@ export class SetStateTransaction {
 
     component.componentDidUpdate(component.props, nextState)
   }
+
   setState(nextPartialState) {
     this.nextPartialState_ = Object.assign({}, this.nextPartialState_, nextPartialState_)
   }
@@ -83,6 +89,7 @@ export class UnmountTransaction {
     render(null)
     return null
   }
+
   setState(nextPartialState) {
     throw new Error(
       'UnmountTransaction#setState(): ' +
@@ -95,6 +102,7 @@ export class ReplaceComponentTransaction {
   constructor() {
     this.transaction_ = null
   }
+
   perform(component, nextElement, render) {
     if (component) {
       this.transaction_ = new UnmountTransaction()
@@ -106,6 +114,7 @@ export class ReplaceComponentTransaction {
     }
     return component
   }
+
   setState(nextPartialState) {
     this.transaction_.setState(nextPartialState)
   }
