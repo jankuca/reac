@@ -2,14 +2,20 @@
   "name": "reac",
   "version": "0.1.0",
   "scripts": {
-    "build": "babel src -d lib"
+    "build": "babel src -d lib",
+    "build-example": "npm run build && babel example/src -d example/lib && node build/bundle-example"
   },
   "dependencies": {
     "virtual-dom": "2.1.1"
   },
   "devDependencies": {
     "babel-cli": "6.4.5",
+    "babel-plugin-syntax-jsx": "6.3.13",
     "babel-plugin-transform-es2015-classes": "6.4.5",
-    "babel-plugin-transform-es2015-parameters": "6.4.5"
+    "babel-plugin-transform-es2015-parameters": "6.4.5",
+    "babel-plugin-transform-react-jsx": "6.4.0",
+    "rollup": "0.25.0",
+    "rollup-plugins-commonjs": "2.2.0",
+    "rollup-plugins-npm": "1.3.0"
   }
 }
