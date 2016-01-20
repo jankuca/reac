@@ -3,14 +3,16 @@ export class MountTransaction {
   constructor() {
     this.nextState_ = null
   }
-  perform(component, nextElement) {
+  perform(component, nextElement, render) {
     component = new nextElement.type(nextElement.props)
     this.nextState_ = component.state
 
     component.componentWillMount()
     component.state = this.nextState_
 
-    component.render()
+    let effectiveElement = component.render()
+    render(effectiveElement)
+
     component.componentDidMount()
   }
   setState(nextPartialState) {
@@ -22,7 +24,7 @@ export class ReceivePropsTransaction {
   constructor() {
     this.nextState_ = null
   }
-  perform(component, nextElement) {
+  perform(component, nextElement, render) {
     let prevProps = component.props
     let prevState = component.state
     this.nextState_ = prevState
@@ -39,7 +41,9 @@ export class ReceivePropsTransaction {
     component.props = nextElement.props
     component.state = this.nextState_
 
-    component.render()
+    let effectiveElement = component.render()
+    render(effectiveElement)
+
     component.componentDidUpdate(prevProps, prevState)
   }
   setState(nextPartialState) {
@@ -51,7 +55,7 @@ export class SetStateTransaction {
   constructor() {
     this.nextPartialState_ = null
   }
-  perform(component, nextElement) {
+  perform(component, nextElement, render) {
     let nextState = Object.assign({}, component.state, this.nextPartialState_)
 
     if (!component.shouldComponentUpdate(nextElement.props, nextState)) {
@@ -61,7 +65,10 @@ export class SetStateTransaction {
 
     component.componentWillUpdate(component.props, nextState)
     component.state = nextState
-    component.render()
+
+    let effectiveElement = component.render()
+    render(effectiveElement)
+
     component.componentDidUpdate(component.props, nextState)
   }
   setState(nextPartialState) {
@@ -71,8 +78,10 @@ export class SetStateTransaction {
 
 export class UnmountTransaction {
   constructor() {}
-  perform(component, nextElement) {
+  perform(component, nextElement, render) {
     component.componentWillUnmount()
+    render(null)
+    return null
   }
   setState(nextPartialState) {
     throw new Error(
@@ -86,14 +95,14 @@ export class ReplaceComponentTransaction {
   constructor() {
     this.transaction_ = null
   }
-  perform(component, nextElement) {
+  perform(component, nextElement, render) {
     if (component) {
       this.transaction_ = new UnmountTransaction()
-      component = this.transaction_.perform(component, null)
+      component = this.transaction_.perform(component, null, render)
     }
     if (nextElement) {
       this.transaction_ = new MountTransaction()
-      component = this.transaction_.perform(null, nextElement)
+      component = this.transaction_.perform(null, nextElement, render)
     }
     return component
   }

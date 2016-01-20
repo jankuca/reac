@@ -1,3 +1,5 @@
+import { diff } from 'virtual-dom'
+
 import {
   MountTransaction,
   ReceivePropsTransaction,
@@ -6,8 +8,11 @@ import {
 
 
 export default class Renderer {
-  constructor() {
+  constructor(driver) {
+    this.driver_ = driver
     this.mountedComponents_ = new WeakMap()
+    this.renderedElements_ = new WeakMap()
+    this.rootNodes_ = new WeakMap()
   }
   render(nextElement, mountNode) {
     let prevComponent = this.mountedComponents_.get(mountNode)
@@ -21,7 +26,9 @@ export default class Renderer {
       transaction = new ReceivePropsTransaction()
     }
 
-    let nextComponent = transaction.perform(prevComponent, nextElement)
+    let render = this.updateRendering_.bind(this, mountNode)
+    let nextComponent = transaction.perform(prevComponent, nextElement, render)
+
     this.mountedComponents_.set(mountNode, nextComponent)
   }
   unmountComponentAtNode(mountNode) {
@@ -34,7 +41,38 @@ export default class Renderer {
     }
 
     let transaction = new UnmountTransaction()
-    transaction.perform(component, null)
+
+    let render = this.updateRendering_.bind(this, mountNode)
+    transaction.perform(component, null, render)
+
     this.mountedComponents_.delete(mountNode)
+  }
+  updateRendering_(mountNode, nextRenderedElement) {
+    let prevRenderedElement = this.renderedElements_.get(mountNode)
+    let nextRootNode = this.applyElementToRendering_(
+      mountNode,
+      prevRenderedElement,
+      nextRenderedElement
+    )
+    if (nextRootNode) {
+      this.rootNodes_.set(mountNode, nextRootNode)
+      this.renderedElements_.set(mountNode, nextRenderedElement)
+    } else {
+      this.rootNodes_.delete(mountNode)
+      this.renderedElements_.delete(mountNode)
+    }
+  }
+  applyElementToRendering_(mountNode, prevRenderedElement, nextRenderedElement) {
+    let nextRootNode
+    if (!prevRenderedElement) {
+      nextRootNode = this.driver_.mount(mountNode, nextRenderedElement)
+    } else if (!nextRenderedElement) {
+      nextRootNode = this.driver_.unmount(mountNode)
+    } else {
+      let patches = diff(prevRenderedElement.vnode, nextRenderedElement.vnode)
+      let prevRootNode = this.rootNodes_.get(mountNode)
+      nextRootNode = this.driver_.applyPatches(mountNode, prevRootNode, patches)
+    }
+    return nextRootNode
   }
 }
