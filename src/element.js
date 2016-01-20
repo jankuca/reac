@@ -6,7 +6,7 @@ export default function element(type, props = {}, ...children) {
 
   let element = { type, props }
 
-  let childVNodes = getChildElements(children).map(element => element.vnode)
+  let childVNodes = getChildVNodes(children)
   element.vnode = new VNode(type, props, childVNodes)
 
   return element
@@ -41,4 +41,11 @@ export function getChildElements(children) {
   children.forEach(collectChildElements)
 
   return childElements
+}
+
+
+export function getChildVNodes(children) {
+  let childElements = getChildElements(children)
+  let childVNodes = childElements.map(element => element.vnode)
+  return childVNodes
 }
