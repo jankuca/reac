@@ -13,7 +13,20 @@ export default function element(type, props = {}, ...children) {
 }
 
 
-function getChildElements(children) {
+export function text(text) {
+  text = String(text)
+
+  let element = {
+    type: '__text__',
+    props: {},
+    vnode: new VText(text)
+  }
+
+  return element
+}
+
+
+export function getChildElements(children) {
   let childElements = []
 
   let collectChildElements = (child) => {
@@ -22,7 +35,7 @@ function getChildElements(children) {
     } else if (typeof child === 'object') {
       childElements.push(child)
     } else {
-      childElements.push(new VText(child))
+      childElements.push(text(child))
     }
   }
   children.forEach(collectChildElements)
