@@ -1,4 +1,15 @@
 {
   "name": "reac",
-  "version": "0.1.0"
+  "version": "0.1.0",
+  "scripts": {
+    "build": "babel src -d lib"
+  },
+  "dependencies": {
+    "virtual-dom": "2.1.1"
+  },
+  "devDependencies": {
+    "babel-cli": "6.4.5",
+    "babel-plugin-transform-es2015-classes": "6.4.5",
+    "babel-plugin-transform-es2015-parameters": "6.4.5"
+  }
 }
