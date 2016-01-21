@@ -35,6 +35,9 @@ function main() {
 
   renderer.render(elementB, node)
   console.log(node.outerHTML)
+
+  renderer.unmountComponentAtNode(node)
+  console.log(node.outerHTML)
 }
 
 
