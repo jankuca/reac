@@ -71,7 +71,7 @@ export default class Renderer {
     if (!prevRenderedElement) {
       nextRootNode = this.driver_.mount(mountNode, nextRenderedElement)
     } else if (!nextRenderedElement) {
-      nextRootNode = this.driver_.unmount(mountNode)
+      nextRootNode = this.driver_.unmount(mountNode, prevRenderedElement)
     } else {
       let patches = diff(prevRenderedElement.vnode, nextRenderedElement.vnode)
       let prevRootNode = this.rootNodes_.get(mountNode)
