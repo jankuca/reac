@@ -3,6 +3,7 @@
     "syntax-jsx",
     "transform-react-jsx",
     "transform-es2015-classes",
-    "transform-es2015-parameters"
+    "transform-es2015-parameters",
+    "transform-es2015-modules-commonjs"
   ]
 }

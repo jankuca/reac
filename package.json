@@ -5,7 +5,8 @@
   "scripts": {
     "build": "babel src -d lib",
     "build-example": "npm run build && babel example/src -d example/lib && node build/bundle-example",
-    "postinstall": "npm run build"
+    "postinstall": "npm run build",
+    "test": "npm run build && ava test"
   },
   "dependencies": {
     "virtual-dom": "2.1.1"
