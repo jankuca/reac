@@ -3,7 +3,8 @@ import { diff } from 'virtual-dom'
 import {
   MountTransaction,
   ReceivePropsTransaction,
-  ReplaceComponentTransaction
+  ReplaceComponentTransaction,
+  UnmountTransaction
 } from './transactions'
 
 
