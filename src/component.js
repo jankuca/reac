@@ -32,6 +32,10 @@ export default class Component {
     )
   }
 
+  shouldComponentUpdate() {
+    return true
+  }
+
   componentWillMount() {}
   componentDidMount() {}
   componentWillReceiveProps(nextProps) {}
