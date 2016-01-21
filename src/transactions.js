@@ -15,6 +15,7 @@ export class MountTransaction {
     render(effectiveElement)
 
     component.componentDidMount()
+    return component
   }
 
   setState(nextPartialState) {
@@ -48,6 +49,7 @@ export class ReceivePropsTransaction {
     render(effectiveElement)
 
     component.componentDidUpdate(prevProps, prevState)
+    return component
   }
 
   setState(nextPartialState) {
@@ -75,6 +77,7 @@ export class SetStateTransaction {
     render(effectiveElement)
 
     component.componentDidUpdate(component.props, nextState)
+    return component
   }
 
   setState(nextPartialState) {
